@@ -3,100 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카카오맵 장소 검색 서비스</title>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7faecf0c3c7898e25541b12dcb4e2cf2&autoload=false"></script>
+    <title>🎭 대학로 연극·뮤지컬 지도</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94cff6c2e858861851aa038ebb76d145&libraries=services&autoload=false"></script>
     <style>
-        /* 기본 스타일 리셋 */
+        /* 1. 디자인 컨셉: '글래모피즘(Glassmorphism)'과 '인디고 블루' 트렌디 리뉴얼 */
+        /* 투명한 질감, 부드러운 그림자, 강렬한 색상을 활용하여 화려함을 강조했습니다. */
+        
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+        
         body, html {
             width: 100%;
             height: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", sans-serif;
+            /* 세련된 고딕 계열 폰트 적용 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Malgun Gothic";
             overflow: hidden;
+            background-color: #f0f2f5;
         }
 
-        /* 2분할 레이아웃 컨테이너 */
+        /* 2분할 플렉스 컨테이너 */
         #container {
             display: flex;
             width: 100%;
             height: 100%;
         }
 
-        /* 왼쪽: 검색 및 결과 영역 (너비 350px) */
+        /* 🔍 왼쪽 사이드바: 글래모피즘 디자인 업그레이드 */
         #sidebar {
-            width: 350px;
+            width: 380px;
             height: 100%;
-            background-color: #ffffff;
-            border-right: 1px solid #e2e8f0;
+            /* 반투명한 질감(Glassmorphism) */
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
-            padding: 15px;
-            z-index: 2;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            z-index: 10;
+            /* 부드러운 그림자 효과 */
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.08);
         }
 
-        /* 검색창 구역 */
+        /* 검색창 컴포넌트 */
         .search-box {
             display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 20px;
         }
+        
         #keyword-input {
             flex: 1;
-            padding: 11px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: 14px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 15px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
+            color: #333;
         }
+        
         #keyword-input:focus {
-            border-color: #4f46e5;
+            border-color: #6366f1; /* Indigo Color 포인트 */
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.15);
         }
+        
         #search-button {
-            padding: 11px 16px;
-            background-color: #4f46e5;
+            padding: 14px 20px;
+            background-color: #6366f1; /* 트렌디한 인디고 컬러 */
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 14px;
-            transition: background-color 0.2s;
+            font-size: 15px;
+            transition: all 0.2s ease;
         }
+        
         #search-button:hover {
-            background-color: #3730a3;
+            background-color: #4f46e5;
+            transform: translateY(-1px);
         }
 
-        /* 카테고리 탭 스타일 구역 */
+        /* 탭 버튼 스타일: 화려하고 직관적인 디자인 리뉴얼 */
         .tab-container {
             display: flex;
             background-color: #f1f5f9;
-            padding: 4px;
-            border-radius: 8px;
-            gap: 4px;
-            margin-bottom: 12px;
+            padding: 6px;
+            border-radius: 14px;
+            gap: 6px;
+            margin-bottom: 20px;
         }
+        
         .tab-button {
             flex: 1;
-            padding: 9px;
+            padding: 12px;
             background: none;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #64748b;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 800; /* 글씨 굵게 */
+            color: #718093;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
+        
         .tab-button.active {
-            background-color: #ffffff;
-            color: #4f46e5;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+            background-color: white;
+            color: #6366f1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
 
         /* 결과 리스트 구역 (스크롤 가능) */
@@ -105,104 +126,142 @@
             overflow-y: auto;
             list-style: none;
         }
+        
+        /* 스크롤바 디자인 */
+        #places-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        #places-list::-webkit-scrollbar-thumb {
+            background-color: #e0e6ed;
+            border-radius: 4px;
+        }
+
+        /* 장소 아이템 디자인: 카드 형태로 더욱 예쁘게 */
         .place-item {
-            padding: 14px;
-            border: 1px solid #e2e8f0;
+            padding: 18px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
             background-color: white;
-            margin-bottom: 8px;
-            border-radius: 6px;
+            margin-bottom: 12px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
         }
+        
         .place-item:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
+            background-color: #fbfbfe;
+            border-color: #e0dfff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.08);
         }
+        
         .place-title {
-            font-size: 15px;
+            font-size: 17px;
             font-weight: bold;
             color: #1e293b;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
+        
         .place-address {
-            font-size: 12px;
+            font-size: 13px;
             color: #64748b;
             line-height: 1.4;
         }
 
-        /* 오른쪽: 지도 영역 */
+        /* 🗺️ 오른쪽 지도 영역 */
         #map {
             flex: 1;
             height: 100%;
             z-index: 1;
         }
 
-        /* 📍 클릭 시 나타나는 커스텀 말풍선(오버레이) 디자인 */
+        /* 📍 예쁜 커스텀 말풍선(오버레이) 디자인: 글래모피즘 스타일 적용 */
         .custom-overlay {
             position: relative;
-            bottom: 55px;
-            border-radius: 10px;
-            background: #ffffff;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            border: 1px solid #e2e8f0;
-            min-width: 220px;
+            bottom: 60px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 250px;
             overflow: hidden;
+            animation: popIn 0.3s ease-out;
         }
+        
+        @keyframes popIn {
+            from { transform: scale(0.9) translateY(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
         .custom-overlay .title-bar {
             display: block;
-            background: #4f46e5;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             color: white;
-            padding: 9px 35px 9px 12px;
-            font-size: 14px;
+            padding: 14px 45px 14px 18px;
+            font-size: 16px;
             font-weight: bold;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        
         .custom-overlay .body-content {
-            padding: 12px;
-            font-size: 13px;
+            padding: 16px 18px;
+            font-size: 14px;
+            color: #333;
         }
+        
         .custom-overlay .phone-number {
-            margin-bottom: 8px;
-            color: #475569;
+            margin-bottom: 12px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
+        
         .custom-overlay .map-link {
             display: block;
             text-align: center;
-            color: #4f46e5;
+            color: #6366f1;
             text-decoration: none;
             font-weight: bold;
-            background: #f4f3ff;
-            padding: 7px;
-            border-radius: 6px;
-            transition: background 0.2s;
+            background: #f0f1ff;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
         }
+        
         .custom-overlay .map-link:hover {
-            background: #e0e7ff;
+            background: #e1e4ff;
         }
+        
         .custom-overlay .close-button {
             position: absolute;
-            top: 9px;
-            right: 12px;
-            color: rgba(255, 255, 255, 0.8);
+            top: 14px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.9);
             background: transparent;
             border: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
+            padding: 0;
+            line-height: 1;
         }
+        
         .custom-overlay .close-button:hover {
             color: white;
         }
-        /* 말풍선 아래의 삼각형 꼬리 */
+        
+        /* 말풍선 아래의 삼각형 꼬리 장식 */
         .custom-overlay::after {
             content: '';
             position: absolute;
-            bottom: -6px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
-            border-width: 6px 6px 0;
+            border-width: 8px 8px 0;
             border-style: solid;
             border-color: #ffffff transparent;
             display: block;
@@ -215,16 +274,17 @@
     <div id="container">
         <div id="sidebar">
             <div class="search-box">
-                <input type="text" id="keyword-input" placeholder="장소를 검색해보세요!" onkeypress="if(event.keyCode==13) searchByKeyword();">
+                <input type="text" id="keyword-input" placeholder="어디로 갈까요? 지역이나 역 이름 검색!" onkeypress="if(event.keyCode==13) searchByKeyword();">
                 <button id="search-button" onclick="searchByKeyword()">검색</button>
             </div>
 
             <div class="tab-container">
-                <button id="tab-theater" class="tab-button active" onclick="switchCategory('CT1', this)">🎫 극장</button>
-                <button id="tab-subway" class="tab-button" onclick="switchCategory('SW8', this)">🚇 지하철역</button>
+                <button id="tab-theater" class="tab-button active" onclick="switchCategory('CT1', this)"><span>🎫</span> 극장</button>
+                <button id="tab-subway" class="tab-button" onclick="switchCategory('SW8', this)"><span>🚇</span> 지하철역</button>
             </div>
 
-            <ul id="places-list"></ul>
+            <ul id="places-list">
+                </ul>
         </div>
 
         <div id="map"></div>
@@ -240,10 +300,11 @@
 
         // 이모지를 지도 마커 핀 이미지(SVG 형태)로 실시간 변환하는 함수
         function createEmojiMarker(emoji) {
-            const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="white" stroke="#4f46e5" stroke-width="3"/><text x="50%" y="55%" font-size="20" text-anchor="middle" dominant-baseline="middle">${emoji}</text></svg>`;
+            // 이모지를 더 화려하고 트렌디한 원형 핀 그래픽으로 디자인
+            const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="white" stroke="#6366f1" stroke-width="4"/><text x="50%" y="60%" font-size="24" text-anchor="middle" dominant-baseline="middle">${emoji}</text></svg>`;
             const svgUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
-            const imageSize = new kakao.maps.Size(44, 44);
-            const imageOption = { offset: new kakao.maps.Point(22, 22) };
+            const imageSize = new kakao.maps.Size(48, 48);
+            const imageOption = { offset: new kakao.maps.Point(24, 24) };
             return new kakao.maps.MarkerImage(svgUrl, imageSize, imageOption);
         }
 
@@ -274,13 +335,13 @@
             // 첫 진입 시 기본 카테고리(극장) 데이터 자동 수집
             searchCategoryPlaces();
 
-            // 지도가 드래그 등으로 이동을 멈출 때마다 해당 중심점에서 주변 데이터를 재검색하는 리스너
+            // 지도가 드래그 등으로 이동을 멈출 때마다(Idle 상태) 해당 중심점에서 주변 데이터를 재검색하는 리스너
             kakao.maps.event.addListener(map, 'idle', function() {
                 searchCategoryPlaces();
             });
         }
 
-        // 사용자의 현재 위치를 받아와 지도 중심을 이동시키는 함수
+        // 브라우저 GPS 모듈을 가동하여 사용자 동의 권한을 요구하는 함수
         function requestUserLocation() {
             if (navigator.geolocation) {
                 // 브라우저 위치 권한 허용 팝업 실행
@@ -300,7 +361,7 @@
                     });
                     userMarker.setMap(map);
 
-                    // 획득한 새 중심점 기반으로 카테고리 스캔 데이터 갱신
+                    // 획득한 새 중심점 기반으로 주변 카테고리 스캔 데이터 갱신
                     searchCategoryPlaces();
 
                 }, function(error) {
@@ -326,7 +387,7 @@
                     const firstPlace = data[0];
                     const movePosition = new kakao.maps.LatLng(firstPlace.y, firstPlace.x);
                     map.setCenter(movePosition);
-                    closeOverlay();
+                    closeOverlay(); // 열려있는 말풍선은 닫기
                 } else {
                     alert('검색 결과가 존재하지 않습니다.');
                 }
@@ -361,15 +422,15 @@
                     clearMarkers(); // 이전 라운드 마커 폐기
                     
                     const listEl = document.getElementById('places-list');
-                    listEl.innerHTML = ''; // 왼쪽 리스트 초기화
+                    listEl.innerHTML = ''; // 이전 왼쪽 리스트 초기화
 
-                    // 취득한 장소 배열 개수만큼 루프를 돌며 화면 구성
+                    // 취득한 장소 배열 개수만큼 루프를 돌며 마커와 목록 UI 렌더링
                     for (let i = 0; i < data.length; i++) {
                         displayPlaceItem(data[i]);
                     }
                 } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                     clearMarkers();
-                    document.getElementById('places-list').innerHTML = '<li style="text-align:center;color:#64748b;font-size:13px;padding:30px;">주변에 대상 장소가 없습니다.</li>';
+                    document.getElementById('places-list').innerHTML = '<li style="text-align:center;color:#64748b;font-size:14px;padding:40px;">주변에 검색 결과가 없어요.</li>';
                 }
             }, {
                 location: map.getCenter(),
@@ -378,10 +439,10 @@
             });
         }
 
-        // 지도에 개별 장소 마커를 심고 목록 아이템을 바인딩 렌더링하는 함수
+        // 지도에 장소 마커를 심고 목록 아이템을 바인딩 렌더링하는 핵심 함수
         function displayPlaceItem(place) {
             const markerPosition = new kakao.maps.LatLng(place.y, place.x);
-            // 현재 활성화된 카테고리에 상응하는 이모지 마커 이미지 추출 할당
+            // 현재 활성화된 카테고리에 상응하는 화려한 이모지 마커 이미지 추출 할당
             const markerImage = createEmojiMarker(markerEmojis[currentCategory]);
 
             // 1. 오른쪽에 커스텀 이모지 마커 배치
@@ -392,14 +453,14 @@
             marker.setMap(map);
             markers.push(marker); // 일괄 제거 목적 관리 배열 취합
 
-            // 요구 조건: 클릭 시 출현할 장소명, 연락처, 카카오맵 전용 상세 정보 링크 커스텀 템플릿
+            // 📍 마커 클릭 시 출현할 '화려한 글래모피즘' 말풍선(오버레이) HTML
             const contentString = `
                 <div class="custom-overlay">
                     <span class="title-bar">${place.place_name}</span>
                     <button class="close-button" onclick="closeOverlay()">✕</button>
                     <div class="body-content">
-                        <div class="phone-number">📞 ${place.phone ? place.phone : '등록된 번호 없음'}</div>
-                        <a href="${place.place_url}" target="_blank" class="map-link">카카오맵 상세정보</a>
+                        <div class="phone-number">📞 ${place.phone ? place.phone : '번호 등록 안됨'}</div>
+                        <a href="${place.place_url}" target="_blank" class="map-link">카카오맵 바로가기</a>
                     </div>
                 </div>
             `;
@@ -418,7 +479,7 @@
                 activeOverlay = overlay;
             });
 
-            // 2. 왼쪽에 매칭 리스트 요소 생성 추가
+            // 2. 왼쪽에 매칭 리스트 요소 생성 추가 (카드 형태)
             const listEl = document.getElementById('places-list');
             const itemEl = document.createElement('li');
             itemEl.className = 'place-item';
@@ -427,7 +488,7 @@
                 <div class="place-address">${place.road_address_name ? place.road_address_name : place.address_name}</div>
             `;
 
-            // 왼쪽 리스트 목록 클릭 시 지도를 포커스 이동하고 원격 마커 클릭 이벤트 강제 실행
+            // 왼쪽 리스트 목록 클릭 시 지도를 포커스 이동하고 연결된 마커를 원격 강제 클릭 작동 트리거
             itemEl.onclick = function() {
                 map.setCenter(markerPosition);
                 kakao.maps.event.trigger(marker, 'click');
